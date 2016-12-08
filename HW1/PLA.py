@@ -5,7 +5,7 @@ def check_correctness(weight, X, Y):
     tmp = np.dot(weight, X)
     if tmp == 0:
         tmp = -1
-    if np.sign(tmp) != Y[i]:
+    if np.sign(tmp) != Y:
         return False
     return True
 
