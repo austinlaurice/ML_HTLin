@@ -3,7 +3,7 @@ import random
 
 def check_correctness(weight, X, Y):
     tmp = np.dot(weight, X)
-    if tmp == 0:
+    if int(tmp) == 0:
         tmp = -1
     if np.sign(tmp) != Y:
         return False
@@ -17,9 +17,11 @@ def better_one(w1, w2, X, Y):
             m1 += 1
         if not check_correctness(w2, X[i], Y[i]):
             m2 += 1
+    #print w1, m1, w2, m2
     if m1 > m2:
         return w2
     else:
+  
         return w1
 
 def naive_cyclic_PLA(X, Y, random_ord=False, nu=1):
@@ -42,17 +44,25 @@ def naive_cyclic_PLA(X, Y, random_ord=False, nu=1):
         mistake = 0
     return weight, index_record, round_cnt
 
-def pocket_PLA(X, Y, updates=50):
+def pocket_PLA(X, Y, updates=50, pocket=True):
     #weight = np.random.rand(len(X[0]))
+    weight_hat = np.zeros(len(X[0]), dtype=np.float64)
     weight = np.zeros(len(X[0]), dtype=np.float64)
+    
     update = 0
     while update < updates:
         i = random.randrange(0, len(Y)-1)
+        #print i
         if not check_correctness(weight, X[i], Y[i]):
-            tmp = weight + Y[i]*X[i]
-            weight = better_one(weight, tmp, X, Y)
+            weight = weight + Y[i]*X[i]
+            if pocket:
+                weight_hat = better_one(weight, weight_hat, X, Y)
+                #print weight
             update += 1
-    return weight
+    if pocket:
+        return weight_hat
+    else:
+        return weight
 
 def test_accuracy(w, X, Y):
     m = 0

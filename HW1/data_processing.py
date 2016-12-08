@@ -1,5 +1,5 @@
 import numpy as np
-import plotly.plotly as py
+from matplotlib import pyplot as plt
 
 def process_data(filename):
     x_arr = []
@@ -16,6 +16,17 @@ def process_data(filename):
     y_arr = np.array(y_arr)
     return x_arr, y_arr
 
-def histogram(x, y, filename):
-    fig = {'data': [{'x': x, 'y': y, 'type':'bar'}]}
-    py.image.save_as(fig, 'filename')
+#def histogram(x, y, filename):
+def histogram(x, filename, xlabel, ylabel):
+    hist, bins = np.histogram(x, bins='auto')
+    width = 0.75 * (bins[1] - bins[0])
+    center = (bins[:-1] + bins[1:]) / 2
+    plt.bar(center, hist, align='center', width=width)
+    #plt.show()
+    fig, ax = plt.subplots()
+    ax.bar(center, hist, align='center', width=width)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    fig.savefig(filename)
+
+    
