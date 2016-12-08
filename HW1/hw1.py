@@ -23,7 +23,7 @@ if __name__ == '__main__':
     
     update = []
     for i in range(2000):
-        _, index_record, _ = naive_cyclic_PLA(X, Y, random=True)
+        _, index_record, _ = naive_cyclic_PLA(X, Y, random_ord=True)
         total_update = sum(index_record)
         update.append(total_update)
     update, freq = data_reorder(update)
