@@ -19,14 +19,14 @@ def data_reorder(update):
 
 
 if __name__ == '__main__':
-    '''
     X, Y = process_data('./hw1_15_train.dat.txt')
 
     # Q15
     _, index_record, _ = naive_cyclic_PLA(X, Y)
-    print 'updates: %d, index that results in max updates: %d' % (sum(index_record), index_record.argsort()[::-1][0]) 
+    print 'question 15: updates: %d, index that results in max updates: %d' % (sum(index_record), index_record.argsort()[::-1][0]) 
 
     #Q16
+    print 'question 16'
     update = []
     for i in range(2000):
         _, index_record, _ = naive_cyclic_PLA(X, Y, random_ord=True)
@@ -37,6 +37,7 @@ if __name__ == '__main__':
     histogram(update, 'question16.png', 'number of updates', 'frequency')
 
     #Q17
+    print 'question 17'
     update = []
     for i in range(2000):
         _, index_record, _ = naive_cyclic_PLA(X, Y, random_ord=True, nu=0.25)
@@ -45,14 +46,12 @@ if __name__ == '__main__':
     #update, freq = data_reorder(update)
     #histogram(update, freq, 'question17.png')
     histogram(update, 'question17.png', 'number of updates', 'frequency')
-    '''
 
     X_train, Y_train = process_data('./hw1_18_train.dat.txt')
     X_test, Y_test = process_data('./hw1_18_test.dat.txt')
 
-    '''
     #Q18
-    print 'start question 18'
+    print 'question 18'
     errors = []
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train)
@@ -61,17 +60,16 @@ if __name__ == '__main__':
     histogram(errors, 'question18.png', 'error rate', 'frequency')
 
     #Q19
-    print 'start question 19'
+    print 'question 19'
     errors = []
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train, updates=100)
         error = test_accuracy(weight, X_test, Y_test)
         errors.append(error)
     histogram(errors, 'question19.png', 'error rate', 'frequency')
-    '''
 
     #Q20
-    print 'start question 20'
+    print 'question 20'
     errors = []
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train, updates=100, pocket=False)
