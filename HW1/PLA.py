@@ -32,7 +32,7 @@ def naive_cyclic_PLA(X, Y, random_ord=False, nu=1):
         random.shuffle(order)
     while True:
         for i in order:
-            if check_correctness(weight, X[i], Y[i]):
+            if not check_correctness(weight, X[i], Y[i]):
                 weight = weight + nu * Y[i]*X[i]
                 mistake += 1
                 index_record[i] += 1
