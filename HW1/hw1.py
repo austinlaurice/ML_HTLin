@@ -19,7 +19,7 @@ def data_reorder(update):
 
 
 if __name__ == '__main__':
-    X, Y = process_data('./hw1_15_train.dat.txt')
+    X, Y = process_data('./hw1_15_train.dat')
 
     # Q15
     _, index_record, _ = naive_cyclic_PLA(X, Y)
@@ -34,6 +34,8 @@ if __name__ == '__main__':
         update.append(int(total_update))
     #update, freq = data_reorder(update)
     #histogram(update, freq, 'question16.png')
+    avg = sum(update)/float(len(update))
+    print 'question 16: average update: %f' % avg
     histogram(update, 'question16.png', 'number of updates', 'frequency')
 
     #Q17
@@ -45,10 +47,12 @@ if __name__ == '__main__':
         update.append(int(total_update))
     #update, freq = data_reorder(update)
     #histogram(update, freq, 'question17.png')
+    avg = sum(update)/float(len(update))
+    print 'question 17: average update: %f' % avg
     histogram(update, 'question17.png', 'number of updates', 'frequency')
 
-    X_train, Y_train = process_data('./hw1_18_train.dat.txt')
-    X_test, Y_test = process_data('./hw1_18_test.dat.txt')
+    X_train, Y_train = process_data('./hw1_18_train.dat')
+    X_test, Y_test = process_data('./hw1_18_test.dat')
 
     #Q18
     print 'question 18'
@@ -56,7 +60,9 @@ if __name__ == '__main__':
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train)
         error = test_accuracy(weight, X_test, Y_test)
-        errors.append(error)
+        errors.append(float(error)/len(Y_test))
+    avg = sum(errors)/float(len(errors))
+    print 'question 18: average error rate: %f' % avg
     histogram(errors, 'question18.png', 'error rate', 'frequency')
 
     #Q19
@@ -65,7 +71,9 @@ if __name__ == '__main__':
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train, updates=100)
         error = test_accuracy(weight, X_test, Y_test)
-        errors.append(error)
+        errors.append(float(error)/len(Y_test))
+    avg = sum(errors)/float(len(errors))
+    print 'question 19: average error rate: %f' % avg
     histogram(errors, 'question19.png', 'error rate', 'frequency')
 
     #Q20
@@ -74,5 +82,7 @@ if __name__ == '__main__':
     for i in range(2000):
         weight = pocket_PLA(X_train, Y_train, updates=100, pocket=False)
         error = test_accuracy(weight, X_test, Y_test)
-        errors.append(error)
+        errors.append(float(error)/len(Y_test))
+    avg = sum(errors)/float(len(errors))
+    print 'question 20: average error rate: %f' % avg
     histogram(errors, 'question20.png', 'error rate', 'frequency')

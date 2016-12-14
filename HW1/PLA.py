@@ -3,7 +3,7 @@ import random
 
 def check_correctness(weight, X, Y):
     tmp = np.dot(weight, X)
-    if int(tmp) == 0:
+    if tmp == 0.0:
         tmp = -1
     if np.sign(tmp) != Y:
         return False
@@ -21,7 +21,6 @@ def better_one(w1, w2, X, Y):
     if m1 > m2:
         return w2
     else:
-  
         return w1
 
 def naive_cyclic_PLA(X, Y, random_ord=False, nu=1):
