@@ -2,9 +2,10 @@
 
 Written in Python2
 
-$ python2 hw1.py
+$ python2 "question_number".py
 
-Executing it would output the result of question 15 and the pictures for question 16~20.
+Executing it would output the result of the question and the result plot if that question has one.
 
-The files needed are all in the directory.
-Packages numpy and matplotlib are needed. 
+The codes needed are all in the directory. Please place the training and testing data in the same folder as codes.
+
+Packages numpy and matplotlib are needed.
