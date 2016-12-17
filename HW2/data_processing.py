@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import random
 
 def process_data(filename):
     x_arr = []
@@ -23,7 +24,17 @@ def sort_x_y(X, Y):
     Y = Y(index_order)
     return X, Y
 
-
+def generate_data(num, pos):
+    X = np.random.uniform(low=-1.0, high=1.0, size=10)
+    Y = []
+    for x in X:
+        dice = random.randint(1, pos)
+        if dice % pos == 1:
+            Y.append(np.sign(x) * (-1))
+        else:
+            Y.append(np.sign(x))
+    Y = np.array(Y)
+    return X, Y
 
 #def histogram(x, y, filename):
 def histogram(x, filename, xlabel, ylabel):
