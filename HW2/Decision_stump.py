@@ -18,7 +18,7 @@ def check_correctness(s, theta, X, y):
 def check_accuracy(s, theta, X, Y):
     correct = 0
     for i in range(len(Y)):
-        correct += check_correctness(x, Y[i])
+        correct += check_correctness(s, theta, X[i], Y[i])
     return float(correct)/(X.shape[0])
     
 def one_dimension_decision_stump(X, Y):
@@ -31,7 +31,7 @@ def one_dimension_decision_stump(X, Y):
         for s_now in [1, -1]:
             rec = 0
             for i in range(len(X)):
-                rec += check_correctness(s_now, theta_now, X[i], Y[i])
+                rec += check_correctness(s_now, theta_now, [X[i]], Y[i])
             if rec > best_record:
                 s = s_now
                 theta = theta_now
@@ -42,7 +42,7 @@ def multi_dimension_decision_stump(X, Y):
     X_trans = np.transpose(X)
     possibles = []
     for x in X_trans:
-        _, s, theta = one_dimension_decision_stump(x, Y)
+        a, s, theta = one_dimension_decision_stump(x, Y)
         possibles.append((s, theta))
     best_record = 0
     s = []

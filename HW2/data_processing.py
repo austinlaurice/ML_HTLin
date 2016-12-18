@@ -8,7 +8,7 @@ def process_data(filename):
     with open(filename, 'r') as f:
         for line in f:
             tmp = []
-            line = line.strip('\n').replace('\t', ' ').split(' ')
+            line = line.strip('\n').strip().replace('\t', ' ').split(' ')
             for x in line[:-1]:
                 tmp.append(float(x))
             x_arr.append(tmp)
@@ -21,7 +21,7 @@ def process_data(filename):
 def sort_x_y(X, Y):
     index_order = X.argsort()
     X.sort()
-    Y = Y(index_order)
+    Y = Y[index_order]
     return X, Y
 
 def generate_data(num, pos):
