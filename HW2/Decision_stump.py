@@ -18,7 +18,7 @@ def check_correctness(s, theta, X, y):
 def check_accuracy(s, theta, X, Y):
     correct = 0
     for i in range(len(Y)):
-        correct += check_correctness(s, theta, X[i], Y[i])
+        correct += check_correctness(s, theta, [X[i]], Y[i])
     return float(correct)/(X.shape[0])
     
 def one_dimension_decision_stump(X, Y):
@@ -36,41 +36,31 @@ def one_dimension_decision_stump(X, Y):
                 s = s_now
                 theta = theta_now
                 best_record = rec
-    return best_record, s, theta            
+    return best_record, s, theta
 
 def multi_dimension_decision_stump(X, Y):
     X_trans = np.transpose(X)
+    best_record = 0
     possibles = []
+    cnt = 0
     for x in X_trans:
         a, s, theta = one_dimension_decision_stump(x, Y)
-        possibles.append((s, theta))
-    best_record = 0
-    s = []
-    theta = []
-    for p in possibles:
-        rec = 0
-        for i in range(X.shape[0]):
-            rec += check_correctness(p[0], p[1], X[i], Y[i])
-        if rec > best_record:
-            best_record = rec
-            s = [p[0]]
-            theta = [p[1]]
-        elif rec == best_record:
-            s.append(p[0])
-            theta.append(p[1])
-    if len(s) > 1:
-        r = random.randint(0, len(s)-1)
-        s = s[r]
-        theta = theta[r]
-    else:
-        s = s[0]
-        theta = theta[0]
-    return best_record, s, theta
+        if a > best_record:
+            best_record = a
+            possibles = [(s, theta, cnt)]
+        elif a == best_record:
+            possibles.append((s, theta, cnt))
+        cnt += 1
+    w = 0
+    if len(possibles) > 1:
+        w = random.randint(0, len(possibles)-1)
+    return best_record, possibles[w][0], possibles[w][1], possibles[w][2]
 
 def Out_of_sample_error(s, theta):
-    if s > 0:
-        return 0.2 + 0.3 * abs(theta)
-    else:
-        return 0.8 - 0.3 * abs(theta)
+    return 0.5 + 0.3 * s * (abs(theta) - 1)
+    #if s > 0:
+    #    return 0.2 + 0.3 * abs(theta)
+    #else:
+    #    return 0.8 - 0.3 * abs(theta)
 
 
