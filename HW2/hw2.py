@@ -21,7 +21,7 @@ if __name__ == '__main__':
     X_train, Y_train = process_data('./hw2_train.dat')
     X_test, Y_test = process_data('./hw2_test.dat')
     best_record, s, theta, index = multi_dimension_decision_stump(X_train, Y_train)
-    print "Qustion 19: h = %d * sign(x - %f), in sample error: %f" % (s, theta, (len(Y_train)-float(best_record))/len(Y_train))
+    print "Qustion 19: index: %d, h = %d * sign(x - %f), in sample error: %f" % (index, s, theta, (len(Y_train)-float(best_record))/len(Y_train))
     X_test_trans = np.transpose(X_test)
     accuracy = check_accuracy(s, theta, X_test_trans[index], Y_test)
     print "Qustion 20: out of sample error: %f" % (1 - accuracy)

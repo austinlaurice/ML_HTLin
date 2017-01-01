@@ -26,8 +26,14 @@ def one_dimension_decision_stump(X, Y):
     best_record = 0
     s = 1
     theta = X[0]
-    for x in X:
-        theta_now = x
+    for k in range(len(X)+1):
+        theta_now = None
+        if k != 0 and k != len(X):
+            theta_now = float(X[k-1] + X[k])/2
+        elif k == 0:
+            theta_now = X[k]
+        elif k == len(X):
+            theta_now = X[k-1]
         for s_now in [1, -1]:
             rec = 0
             for i in range(len(X)):

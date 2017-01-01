@@ -9,6 +9,7 @@ def process_data(filename):
             tmp = [1, ]
             line = line.strip('\n').replace('\t', ' ').split(' ')
             for x in line[:-1]:
+                print x
                 tmp.append(float(x))
             x_arr.append(tmp)
             y_arr.append(int(line[-1]))
