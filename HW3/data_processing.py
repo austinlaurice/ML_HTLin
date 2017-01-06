@@ -49,4 +49,10 @@ def histogram(x, filename, xlabel, ylabel):
     plt.ylabel(ylabel)
     fig.savefig(filename)
 
-    
+def histogram_2(x, y, filename, xlabel, ylabel):
+    plt.bar(x, y, align='center')
+    fig, ax = plt.subplots()
+    ax.bar(x, y, align='center')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    fig.savefig(filename)
