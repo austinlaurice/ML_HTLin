@@ -3,7 +3,6 @@ from Logistic_regression import *
 from Linear_regression import *
 from math import exp
 
-
 if __name__ == '__main__':
     """
     X_train, Y_train = process_data('./hw3_train.dat')
