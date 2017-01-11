@@ -4,7 +4,6 @@ from Linear_regression import *
 from math import exp
 
 if __name__ == '__main__':
-    """
     X_train, Y_train = process_data('./hw3_train.dat')
     X_test, Y_test = process_data('./hw3_test.dat')
     # Q11
@@ -24,8 +23,6 @@ if __name__ == '__main__':
     print 'result of question 12'
     print w
     print ("error_rate: %f") % (error_rate)
-    """
-
 
 
     # Q13
@@ -41,32 +38,37 @@ if __name__ == '__main__':
     print ("E_in: %f") % (error_rate_1)
     print ("E_out: %f") % (error_rate_2)
 
-
     # Q14
+    X_train, Y_train = process_data('./hw4_train.dat')
+    X_test, Y_test = process_data('./hw4_test.dat')
     Lambda_list = range(-10, 3)
     E_in = []
     w_list = []
     for L in Lambda_list:
-        w_list.append(Ridge_Regression(X_train, Y_train, pow(10, L)))
+        w = Ridge_Regression(X_train, Y_train, pow(10, L))
         E_in.append((1-error_test_0_1(w, X_train, Y_train)))
+        w_list.append(w)
     best = find_best_lambda(E_in, Lambda_list)
     histogram_2(Lambda_list, E_in, 'question_14.png', 'log_10(lambda)', 'E_in')
     error = 1 - error_test_0_1(w_list[best], X_test, Y_test)
     print 'result of question 14'
-    print 'best lambda: %f, out of sample error: %f' % (pow(10, Lambda_list[best]), error)
+    print 'best log_10(lambda): %d, out of sample error: %f' % (Lambda_list[best], error)
 
     # Q15
     Lambda_list = range(-10, 3)
     E_in = []
     E_out = []
+    w_list = []
     for L in Lambda_list:
         w = Ridge_Regression(X_train, Y_train, pow(10, L))
         E_out.append((1-error_test_0_1(w, X_test, Y_test)))
+        w_list.append(w)
     best = find_best_lambda(E_out, Lambda_list)
     histogram_2(Lambda_list, E_out, 'question_15.png', 'log_10(lambda)', 'E_out')
     error = 1 - error_test_0_1(w_list[best], X_test, Y_test)
     print 'result of question 15'
-    print 'best lambda: %f, out of sample error: %f' % (pow(10, Lambda_list[best]), error)
+    #print 'best lambda: %f, out of sample error: %f' % (pow(10, Lambda_list[best]), error)
+    print 'best log_10(lambda): %d, out of sample error: %f' % (Lambda_list[best], error)
 
     # Q16
     X_train_s = X_train[:120]
@@ -77,13 +79,14 @@ if __name__ == '__main__':
     E_out = []
     w_list = []
     for L in Lambda_list:
-        w_list.append(Ridge_Regression(X_train_s, Y_train_s, pow(10, L)))
+        w = Ridge_Regression(X_train_s, Y_train_s, pow(10, L))
         E_in.append((1-error_test_0_1(w, X_train_s, Y_train_s)))
+        w_list.append(w)
     best = find_best_lambda(E_in, Lambda_list)
     histogram_2(Lambda_list, E_in, 'question_16.png', 'log_10(lambda)', 'E_in')
     error = 1 - error_test_0_1(w_list[best], X_test, Y_test)
     print 'result of question 16'
-    print 'best lambda: %f, out of sample error: %f' % (pow(10, Lambda_list[best]), error)
+    print 'best log_10(lambda): %d, out of sample error: %f' % (Lambda_list[best], error)
 
     # Q17
     X_train_s = X_train[:120]
@@ -94,21 +97,22 @@ if __name__ == '__main__':
     E_val = []
     w_list = []
     for L in Lambda_list:
-        w_list.append(Ridge_Regression(X_train_s, Y_train_s, pow(10, L)))
+        w = Ridge_Regression(X_train_s, Y_train_s, pow(10, L))
         E_val.append((1-error_test_0_1(w, X_val, Y_val)))
+        w_list.append(w)
     best = find_best_lambda(E_val, Lambda_list)
     histogram_2(Lambda_list, E_val, 'question_17.png', 'log_10(lambda)', 'E_val')
     error = 1 - error_test_0_1(w_list[best], X_test, Y_test)
     print 'result of question 17'
-    print 'best lambda: %f, out of sample error: %f' % (pow(10, Lambda_list[best]), error)
+    print 'best log_10(lambda): %d, out of sample error: %f' % (Lambda_list[best], error)
 
     # Q18
     Lambda_best = Lambda_list[best]
-    w = Ridge_Regression(X_train, Y_train, pow(10, L))
+    w = Ridge_Regression(X_train, Y_train, pow(10, Lambda_best))
     E_in = 1 - error_test_0_1(w, X_train, Y_train)
     E_out = 1 - error_test_0_1(w, X_test, Y_test)
     print 'result of question 18'
-    print 'best lambda: %f, in sample error: %f, out of sample error: %f' % (pow(10, Lambda_best), E_in, E_out)
+    print 'best log_10(lambda): %d, in sample error: %f, out of sample error: %f' % (Lambda_best, E_in, E_out)
 
     # Q19
     E_cv = []
@@ -119,8 +123,8 @@ if __name__ == '__main__':
         for i in range(5):
             index = range(5)
             index.remove(i)
-            X_cv_train = X_cv[index[1]]
-            Y_cv_train = Y_cv[index[1]]
+            X_cv_train = X_cv[index[0]]
+            Y_cv_train = Y_cv[index[0]]
             for j in index[1:]:
                 X_cv_train = np.row_stack((X_cv_train, X_cv[j]))
                 Y_cv_train = np.concatenate((Y_cv_train, Y_cv[j]))
@@ -129,14 +133,13 @@ if __name__ == '__main__':
         E_cv.append(error_sum/5)
     best = find_best_lambda(E_cv, Lambda_list)
     print 'result of question 19'
-    print 'Cross validation error: %f, best lambda: %f' % (E_cv[best], pow(10, Lambda_list[best]))
+    print 'Cross validation error: %f, best log_10(lambda): %d' % (E_cv[best], Lambda_list[best])
 
     # Q20
     Lambda_best = Lambda_list[best]
-    w = Ridge_Regression(X_train, Y_train, pow(10, L))
+    w = Ridge_Regression(X_train, Y_train, pow(10, Lambda_best))
     E_in = 1 - error_test_0_1(w, X_train, Y_train)
     E_out = 1 - error_test_0_1(w, X_test, Y_test)
     print 'result of question 20'
-    print 'best lambda: %f, in sample error: %f, out of sample error: %f' % (pow(10, Lambda_best), E_in, E_out)
-
+    print 'best log_10(lambda): %d, in sample error: %f, out of sample error: %f' %  (Lambda_best, E_in, E_out)
 

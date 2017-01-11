@@ -7,7 +7,7 @@ def process_data(filename):
     y_arr = []
     with open(filename, 'r') as f:
         for line in f:
-            tmp = []
+            tmp = [1, ]
             line = line.strip('\n').strip().replace('\t', ' ').split(' ')
             for x in line[:-1]:
                 tmp.append(float(x))
@@ -56,3 +56,9 @@ def histogram_2(x, y, filename, xlabel, ylabel):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     fig.savefig(filename)
+
+def curve(x, y, filename, xlabel, ylabel):
+    plt.plot(x, y, 'r--', x, y, 'bo')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.savefig(filename)

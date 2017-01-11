@@ -15,4 +15,4 @@ def find_best_lambda(E, L):
         if E[i] <= error:
             error = E[i]
             ind = i
-    return i
+    return ind
