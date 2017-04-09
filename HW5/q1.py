@@ -2,6 +2,7 @@ from cvxopt import matrix
 from cvxopt.solvers import qp
 import numpy
 from svmutil import *
+import SVM
 
 def question1(y):
     N = 7
@@ -24,20 +25,9 @@ def Kernel(x1, x2):
 
 def question2(y):
     X = [[1, 0], [0, 1], [0, -1], [-1, 0], [0, 2], [0, -2], [-2, 0]]
-    px = svm_problem(y, X)
-    pm = svm_parameter()
-    pm.kernel_type = POLY
-    pm.C = 10000
-    pm.coef0 = 2
-    pm.degree = 2
-    m = svm_train(px, pm)
-    print m
-    print m.get_SV()
-    print m.get_sv_coef()
-    #for i in range(7):
-    #    for j in range(7):
-    #        Q[i][j] = y[i]*y[j]*Kernel(X[i], X[j])
-
+    clf = SVM.poly_kernel(y, X, 1, 2, 2, 1, 1000000)
+    print SVM.get_dual_coef(clf)
+    print SVM.get_SV(clf)
 '''
 def question2(y):
     X = numpy.array([[1, 0], [0, 1], [0, -1], [-1, 0], [0, 2], [0, -2], [-2, 0]])

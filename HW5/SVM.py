@@ -1,6 +1,7 @@
 #from svmutil import *
 from utils import *
 from sklearn import svm
+import numpy
 
 def cal_w_dis(clf):
     w = clf.coef_
@@ -14,12 +15,21 @@ def error_0_1(ans, data, clf):
     result = clf.predict(data)
     err = 0
     for i in range(len(ans)):
-        if a!= result[i]:
+        if ans[i]!= result[i]:
             err += 1
     return float(err)/len(ans)
 
 def SV_num(clf):
     return clf.n_support_
+
+def get_SV(clf):
+    return clf.support_vectors_
+
+def get_coef(clf):
+    return clf.coef_
+
+def get_dual_coef(clf):
+    return clf.dual_coef_
 
 def free_SV(clf):
     pass
@@ -39,9 +49,10 @@ def linear_kernel(label, data, binary, C):
     #print_info(clf)
     #print clf.coef_
 
-def poly_kernel(label, data, binary, degree, coef, C):
+def poly_kernel(label, data, binary, degree, coef, gamma, C):
     label = which_binary(label, binary)
-    clf = svm.SVC(kernel='poly', degree=degree, coef0=coef, C=C)
+    print numpy.unique(label)
+    clf = svm.SVC(kernel='poly', degree=degree, coef0=coef, gamma=gamma, C=C)
     clf.fit(data, label)
     return clf
     #print_info(clf)

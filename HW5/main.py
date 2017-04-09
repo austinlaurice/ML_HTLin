@@ -1,6 +1,6 @@
 import utils
 import SVM
-
+import numpy
 
 if __name__ == '__main__':
     
@@ -18,13 +18,16 @@ if __name__ == '__main__':
     
     # question 12
     E_in_list = []
+    #label, data = utils.load_data('features.train')
+    print numpy.unique(label)
     for C in C_list_log:
-        clf = SVM.poly_kernel(label, data, 8.0, 2, 1, 10**C)
-        E_in_list.append(SVM.error_0_1(label, clf))
+        clf = SVM.poly_kernel(label, data, 8.0, 2, 1, 1, 10**C)
+        E_in_list.append(SVM.error_0_1(label, data, clf))
     utils.curve(C_list_log, E_in_list, '12.png', 'log(C)', 'E_in')
 
     # question 13
     SV_num_list = []
+    #label, data = utils.load_data('features.train')
     for C in C_list_log:
         clf = SVM.poly_kernel(label, data, 8.0, 2, 1, 10**C)
         SV_num_list.append(SVM.SV_num(clf))
@@ -33,8 +36,8 @@ if __name__ == '__main__':
     '''
     # question 14
     C_list_log = [-3, -2, -1, 0, 1,]
+    label, data = utils.load_data('features.train')
     for C in C_list_log:
         clf = SVM.gaussian_kernel(label, data, 0.0, 80, 10^C)
         free_SV = SVM.free_SV(clf)
     '''
-    

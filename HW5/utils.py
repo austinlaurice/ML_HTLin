@@ -17,12 +17,14 @@ def load_data(filename):
         return label, data
 
 def which_binary(label, target):
+    label_new = []
     for i in range(len(label)):
         if label[i] == target:
-            label[i] = 1
+            label_new.append(1)
         else:
-            label[i] = 0
-    return label
+            label_new.append(-1)
+    label_new = numpy.array(label_new)
+    return label_new
 
 
 def curve(x, y, filename, xlabel, ylabel):
@@ -30,3 +32,4 @@ def curve(x, y, filename, xlabel, ylabel):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.savefig(filename)
+    plt.clf()
