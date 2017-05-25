@@ -15,11 +15,11 @@ def load_data(filename):
                 if x != '':
                     line.append(float(x))
             feature1.append((line[0], line[-1], c))
-            feature1 = sorted(feature1, key=lambda k: k[0])
             feature2.append((line[1], line[-1], c))
-            feature2 = sorted(feature2, key=lambda k: k[0])
             c += 1
-        return [feature1, feature2]
+    feature1 = sorted(feature1, key=lambda k: k[0])
+    feature2 = sorted(feature2, key=lambda k: k[0])
+    return [feature1, feature2]
 
 def load_data_tree(filename):
     features = []

@@ -54,8 +54,38 @@ if __name__ == '__main__':
     data_test  = utils.load_data_tree('hw3_test.dat')
    
     # question 15
-    root = models.DecisionTree(data_train)    
-    DecisionTree_print(root)
+    root, leaf_count = models.DecisionTree(data_train)
+    models.DecisionTree_print(root)
+    p_in = models.DecisionTree_predict(root, data_train)
+    p_out = models.DecisionTree_predict(root, data_test)
+    ans_in = [d[2] for d in data_train]
+    ans_out = [d[2] for d in data_test]
+    Ein = models.error_0_1(p_in, ans_in)
+    Eout = models.error_0_1(p_out, ans_out)
+    print "question 15"
+    print "Ein: %f, Eout: %f" % (Ein, Eout)
 
-
-
+    # question 16
+    root, leaf_count = models.DecisionTree(data_train)
+    ans_in = [d[2] for d in data_train]
+    ans_out = [d[2] for d in data_test]
+    Ein_list = []
+    Eout_list = []
+    for i in xrange(1, leaf_count):
+        p_in = models.DecisionTree_predict(root, data_train, i)
+        p_out = models.DecisionTree_predict(root, data_test, i)
+        Ein = models.error_0_1(p_in, ans_in)
+        Eout = models.error_0_1(p_out, ans_out)
+        Ein_list.append(Ein)
+        Eout_list.append(Eout)
+    print "question 16"
+    
+    print "Ein list"
+    print Ein_list
+    print "Eout list"
+    print Eout_list
+    # test
+    #print models.DecisionTree_predict(root, [[0.1, 0.1, -1]])
+    #print models.DecisionTree_predict(root, [[0.1, 0.1, -1]], 1)
+    
+    
