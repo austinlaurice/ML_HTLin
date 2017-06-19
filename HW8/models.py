@@ -1,125 +1,9 @@
 import numpy
 import operator
 import math
+import random
 
 leaf_count = 1
-
-
-def weighted_0_1(feature, U, t, s):
-    count = 0
-    for i in xrange(len(feature)):
-        if (feature[i][0] >= t and feature[i][1] != s) or (feature[i][0] < t and feature[i][1] == s):
-            count += 1 * U[feature[i][2]]
-    return count
-
-def decision_stump(U, features):
-    '''
-    g = (s, i, theta)
-    '''
-    best_g = [0, 0, 0]
-    best_error = 100
-    n = 0
-    for feature in features:
-        error_pos = weighted_0_1(feature, U, feature[0][0], 1)
-        error_neg = weighted_0_1(feature, U, feature[0][0], -1)
-        threshold_list = []
-        threshold_list.append(feature[0][0])
-        error_pos_list = []
-        error_pos_list.append(error_pos)
-        error_neg_list = []
-        error_neg_list.append(error_neg)
-        for i in range(len(feature) - 1):
-            threshold = (feature[i][0] + feature[i+1][0])/2
-            if feature[i][1] == 1:
-                error_pos += 1 * U[feature[i][2]]
-                error_neg -= 1 * U[feature[i][2]]
-            elif feature[i][1] == -1:
-                error_pos -= 1 * U[feature[i][2]]
-                error_neg += 1 * U[feature[i][2]]
-            threshold_list.append(threshold)
-            error_pos_list.append(error_pos)
-            error_neg_list.append(error_neg)
-        index_pos, value_pos = min(enumerate(error_pos_list), key=operator.itemgetter(1))
-        index_neg, value_neg = min(enumerate(error_neg_list), key=operator.itemgetter(1))
-        if value_pos < value_neg and value_pos < best_error:
-            best_g = [1, n, threshold_list[index_pos]]
-            best_error = value_pos
-        if value_pos > value_neg and value_neg < best_error:
-            best_g = [-1, n, threshold_list[index_neg]]
-            best_error = value_neg
-        n += 1
-    return best_g
-
-def update_U(g, U, features):
-    feature = features[g[1]]
-    t = g[2]
-    s = g[0]
-    sum_U = sum(U)
-    count = 0
-    for i in xrange(len(feature)):
-        if (feature[i][0] >= t and feature[i][1] != s) or (feature[i][0] < t and feature[i][1] == s):
-            count += 1 * U[feature[i][2]]
-    epsilon = count/float(sum_U)
-    diamond = math.sqrt((1-epsilon)/epsilon)
-    # update U
-    for i in xrange(len(feature)):
-        if (feature[i][0] >= t and feature[i][1] != s) or (feature[i][0] < t and feature[i][1] == s):
-            U[feature[i][2]] = U[feature[i][2]] * diamond
-        else:
-            U[feature[i][2]] = U[feature[i][2]] / diamond
-    return U, diamond, epsilon
-
-
-def adaboost(features, T):
-    # already sorted
-    alpha_list = []
-    g_list = []
-    U_list = []   # for question 10
-    epsilon_list = [] #for question 11
-    U = [(1/float(len(features[0])))] * (len(features[0]))
-    U_list.append(sum(U))
-    for t in xrange(T):
-        g = decision_stump(U, features)
-        U, diamond_t, epsilon_t = update_U(g, U, features)
-        U_list.append(sum(U))
-        epsilon_list.append(epsilon_t)
-        alpha_list.append(math.log(diamond_t))
-        g_list.append(g)
-    return (alpha_list, g_list, U_list, epsilon_list)
-
-def predict_with_g(features, g_list):
-    e_list = []
-    for s, i, t in g_list:
-        count = 0
-        feature = features[i]
-        for j in xrange(len(feature)):
-            if (feature[j][0] >= t and feature[j][1] != s) or (feature[j][0] < t and feature[j][1] == s):
-                count += 1
-        e_list.append(float(count)/len(feature))
-    return e_list
-
-def predict_with_G(features, g_list, alpha_list):
-    e_list = []
-    last = [0] * len(features[0])
-    # total T rounds
-    for c in xrange(len(alpha_list)):
-        s, i, t = g_list[c]
-        feature = features[i]
-        err = 0
-        for j in feature:
-            # update last
-            if j[0] >= t:
-                last[j[2]] += alpha_list[c] * s
-            elif j[0] < t:
-                last[j[2]] += alpha_list[c] * s * (-1)
-            # see error or not
-            if numpy.sign(last[j[2]]) != j[1]:
-                err += 1
-        e_list.append(float(err)/len(feature))
-    return e_list
-
-
-
 
 
 def cal_gini_index(data, class_values):
@@ -217,18 +101,6 @@ def DecisionTree_predict_sub(node, d, prune):
     else:
         if isinstance(node['right'], dict):
             return DecisionTree_predict_sub(node['right'], d, prune)
-            '''
-            else:
-                tmp = DecisionTree_predict_sub(node['right'], d, prune)
-                # leaf below is pruned
-                if tmp == 100:
-                    if isinstance(node['left'], dict):
-                        return DecisionTree_predict_sub(node['left'], d, prune)
-                    else:
-                        return node['left'][0]
-                else:
-                    return tmp
-            '''
         else:
             if not prune:
                 return node['right'][0]
@@ -273,15 +145,28 @@ def error_0_1(p, ans):
     return c/float(len(p))
 
 def random_sample(data, N):
-    
-    
+    data_sub = []
+    for i in range(N):
+        n = random.randint(0, N-1)
+        data_sub.append(n)
+    return data_sub
 
-
-
-
-def RandomForest(data_train, tree_amount):
+def RandomForest(data_train, tree_amount, stump=False):
     root_list = []
     for i in range(tree_amount):
         data_train_sub = random_sample(data_train, len(data_train))
-        root_list.append(DesicionTree(data_train))
+        if not stump:
+            root_list.append(DecisionTree(data_train)[0])
+        else:
+            root_list.append(DecisionTreeStump(data_train)[0])
+
     return root_list
+
+def DecisionTreeStump(data_train):
+    global leaf_count
+    leaf_count = 1
+    root = get_split(data_train)
+    left, right = root['groups']
+    root['left'] = (to_terminal(left), leaf_count)
+    root['right'] = (to_terminal(right), leaf_count)
+    return root, leaf_count

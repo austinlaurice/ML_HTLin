@@ -32,6 +32,24 @@ def load_data_tree(filename):
             features.append(line)    
     return features
 
+def histogram(x, filename, xlabel, ylabel):
+    hist, bins = np.histogram(x, bins='auto')
+    width = 0.75 * (bins[1] - bins[0])
+    center = (bins[:-1] + bins[1:]) / 2
+    plt.bar(center, hist, align='center', width=width)
+    #plt.show()
+    fig, ax = plt.subplots()
+    ax.bar(center, hist, align='center', width=width)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    fig.savefig(filename)
+
+def histogram_2(x, y, filename, xlabel, ylabel):
+    plt.bar(x, y, align='center')
+    fig, ax = plt.subplots()
+    ax.bar(x, y, align='center')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
 
 def curve(x, y, filename, xlabel, ylabel):
     plt.plot(x, y, 'r--', x, y, 'bo')
