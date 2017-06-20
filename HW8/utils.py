@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from matplotlib import pyplot as plt
 import random
 
@@ -50,6 +50,7 @@ def histogram_2(x, y, filename, xlabel, ylabel):
     ax.bar(x, y, align='center')
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    fig.savefig(filename)
 
 def curve(x, y, filename, xlabel, ylabel):
     plt.plot(x, y, 'r--', x, y, 'bo')

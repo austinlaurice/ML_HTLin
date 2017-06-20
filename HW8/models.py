@@ -148,7 +148,7 @@ def random_sample(data, N):
     data_sub = []
     for i in range(N):
         n = random.randint(0, N-1)
-        data_sub.append(n)
+        data_sub.append(data[n])
     return data_sub
 
 def RandomForest(data_train, tree_amount, stump=False):
@@ -156,9 +156,9 @@ def RandomForest(data_train, tree_amount, stump=False):
     for i in range(tree_amount):
         data_train_sub = random_sample(data_train, len(data_train))
         if not stump:
-            root_list.append(DecisionTree(data_train)[0])
+            root_list.append(DecisionTree(data_train_sub)[0])
         else:
-            root_list.append(DecisionTreeStump(data_train)[0])
+            root_list.append(DecisionTreeStump(data_train_sub)[0])
 
     return root_list
 
