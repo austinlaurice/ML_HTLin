@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # question 14
     sum_p = [0] * len(p_out_list[0])
     result = []
-    for p in p_in_list:
+    for p in p_out_list:
         sum_p = [(x + y)  for (x, y) in zip(p, sum_p)]
         tmp = []
         for a in sum_p:
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # question 16
     sum_p = [0] * len(p_out_list[0])
     result = []
-    for p in p_in_list:
+    for p in p_out_list:
         sum_p = [(x + y)  for (x, y) in zip(p, sum_p)]
         tmp = []
         for a in sum_p:
